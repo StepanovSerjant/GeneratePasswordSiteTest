@@ -1,19 +1,52 @@
+from selenium.webdriver.common.by import By
+
 from pages.base_page import BasePage
 
 
 class MainPageLocators:
-    LENGHT_SELECTOR = ""
-    OPTION_LENGHT_SELECTOR = ""
+    """
+    Класс, хранящий все локаторы необходимых
+    для работы со страницей элементов
+    """
 
-    SYMBOLS_CHECKBOX = ""
-    NUMBERS_CHECKBOX = ""
-    LOWERCASE_CHECKBOX = ""
-    UPPERCASE_CHECKBOX = ""
-    AUTOSELECT_CHECKBOX = ""
+    LENGHT_SELECTOR = (By.ID, "pgLength")
+    OPTION_LENGHT_SELECTOR = lambda length: (By.XPATH, f"//option[@value='{str(length)}']")
 
-    GENERATE_BTN = ""
-    PASSWORD_OUTPUT_FIELD = ""
+    SYMBOLS_CHECKBOX = (By.ID, "Symbols")
+    NUMBERS_CHECKBOX = (By.ID, "Numbers")
+    LOWERCASE_CHECKBOX = (By.ID, "Lowercase")
+    UPPERCASE_CHECKBOX = (By.ID, "Uppercase")
+    AUTOSELECT_CHECKBOX = (By.ID, "AutoSelect")
+
+    GENERATE_BTN = (By.CSS_SELECTOR, "div.button:nth-child(1)")
+    PASSWORD_OUTPUT_FIELD = (By.ID, "final_pass")
 
 
 class MainPage(MainPageLocators, BasePage):
-    pass
+    """ Класс, описывающий основные действия на странице """
+    
+    def __init__(self, driver):
+        super().__init__(driver)
+        self.driver.get(TestData.BASE_URL)
+
+    def set_checkbox(self, by_locator, checkbox_status):
+        if self.checkbox_status(by_locator) != checkbox_status:
+            self.do_click(by_locator=by_locator)
+
+    def set_length(self, length):
+        self.do_click(by_locator=MainPage.LENGHT_SELECTOR)
+        option = self.wait_for_element(
+            MainPage.OPTION_LENGHT_SELECTOR(length), "located", 5
+        )
+        self.do_click(element=option)
+
+    def get_new_password(self):
+        self.do_click(by_locator=MainPage.GENERATE_BTN)
+        self.driver.implicitly_wait(2)
+        pass_input = self.wait_for_element(
+            MainPage.PASSWORD_OUTPUT_FIELD, "located", 10
+        )
+        new_pass = self.driver.execute_script("return arguments[0].value", pass_input)
+        return new_pass
+
+
