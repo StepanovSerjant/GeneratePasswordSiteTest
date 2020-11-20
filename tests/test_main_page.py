@@ -51,9 +51,9 @@ class TestMain(BaseTest):
             lambda x: x in new_password and x.upper() in new_password, list(new_password.lower())
         ))
 
-    def test_selecting_length(self):
-        testing_length = 16
+    @pytest.mark.parametrize("length", [6, 10, 12, 16, 17, 66, 78, 120])
+    def test_selecting_length(self, length):
         self.main_page = MainPage(self.driver)
-        self.main_page.set_length(testing_length)
+        self.main_page.set_length(length)
         new_password = self.main_page.get_new_password()
-        assert len(new_password) == testing_length
+        assert len(new_password) == length
