@@ -11,21 +11,21 @@ class BasePage:
     def __init__(self, driver):
         self.driver = driver
 
-    def wait_for_element(self, by_locator, ec_type):
+    def wait_for_element(self, by_locator, ec_type, time):
         if ec_type == "clickable":
-            element = wait(self.driver, 15).until(EC.element_to_be_clickable(by_locator))
+            element = wait(self.driver, time).until(EC.element_to_be_clickable(by_locator))
         elif ec_type == "located":
-            element = wait(self.driver, 15).until(EC.visibility_of_element_located(by_locator))
+            element = wait(self.driver, time).until(EC.visibility_of_element_located(by_locator))
         return element
 
     def do_click(self, by_locator=None, element=None):
         if not element:
-            element = self.wait_for_element(by_locator, "clickable")
+            element = self.wait_for_element(by_locator, "clickable", 10)
         element.click()
 
-    def set_checkbox(self, by_locator, checkbox_status):
-        element = self.wait_for_element(by_locator, "located")
-        if element.is_selected() != checkbox_status:
-            self.do_click(element=element)
+    def checkbox_status(self, by_locator):
+        checkbox = self.wait_for_element(by_locator, "located", 10)
+        return checkbox.is_selected()
+
             
         
