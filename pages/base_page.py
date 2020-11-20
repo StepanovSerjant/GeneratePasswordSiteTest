@@ -27,5 +27,9 @@ class BasePage:
         checkbox = self.wait_for_element(by_locator, "located", 10)
         return checkbox.is_selected()
 
+    def get_input_value(self, by_locator):
+        pass_input = self.wait_for_element(by_locator, "located", 10)
+        value = self.driver.execute_script("return arguments[0].value", pass_input)
+        return value
             
         

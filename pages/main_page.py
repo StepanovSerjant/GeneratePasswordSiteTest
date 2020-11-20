@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 
+from data.config import TestData
 from pages.base_page import BasePage
 
 
@@ -33,7 +34,7 @@ class MainPage(MainPageLocators, BasePage):
         if self.checkbox_status(by_locator) != checkbox_status:
             self.do_click(by_locator=by_locator)
 
-    def set_length(self, length):
+    def set_length(self, length: int):
         self.do_click(by_locator=MainPage.LENGHT_SELECTOR)
         option = self.wait_for_element(
             MainPage.OPTION_LENGHT_SELECTOR(length), "located", 5
@@ -43,10 +44,14 @@ class MainPage(MainPageLocators, BasePage):
     def get_new_password(self):
         self.do_click(by_locator=MainPage.GENERATE_BTN)
         self.driver.implicitly_wait(2)
-        pass_input = self.wait_for_element(
-            MainPage.PASSWORD_OUTPUT_FIELD, "located", 10
-        )
-        new_pass = self.driver.execute_script("return arguments[0].value", pass_input)
+        new_pass = self.get_input_value(MainPage.PASSWORD_OUTPUT_FIELD)
         return new_pass
 
+    def get_selected_text(self):
+        selected_text = self.driver.execute_script(
+            """
+            var elem = document.activeElement;
+            return elem.value.substring(elem.selectionStart, elem.selectionEnd);"""
+        )
+        return selected_text
 
