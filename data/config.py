@@ -5,6 +5,5 @@ class FirefoxConfig:
 
 
 class TestData(FirefoxConfig):
-
     BASE_URL = "https://passwordsgenerator.net/"
     
