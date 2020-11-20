@@ -12,6 +12,12 @@ class TestMain(BaseTest):
         new_password = self.main_page.get_new_password()
         assert list(filter(lambda x: x in new_password, list("0123456789")))
 
+    def test_symbols_checkbox(self):
+        self.main_page = MainPage(self.driver)
+        self.main_page.set_checkbox(self.main_page.SYMBOLS_CHECKBOX, True)
+        new_password = self.main_page.get_new_password()
+        assert list(filter(lambda x: x in new_password, list("#%$&@*")))
+
     def test_uppercase_checkbox(self):
         self.main_page = MainPage(self.driver)
         self.main_page.set_checkbox(self.main_page.UPPERCASE_CHECKBOX, True)
@@ -42,7 +48,7 @@ class TestMain(BaseTest):
         self.main_page.set_checkbox(self.main_page.NO_SIMILAR_CHECKBOX, True)
         new_password = self.main_page.get_new_password()
         assert not list(filter(
-            lambda x: x in new_password and x.upper() in new_password, list(new_password)
+            lambda x: x in new_password and x.upper() in new_password, list(new_password.lower())
         ))
 
     def test_selecting_length(self):
