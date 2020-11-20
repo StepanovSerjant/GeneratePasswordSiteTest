@@ -37,6 +37,14 @@ class TestMain(BaseTest):
         new_password = self.main_page.get_new_password()
         assert not list(filter(lambda x: x in new_password, exclude_symbols))
 
+    def test_no_similar_checkbox(self):
+        self.main_page = MainPage(self.driver)
+        self.main_page.set_checkbox(self.main_page.NO_SIMILAR_CHECKBOX, True)
+        new_password = self.main_page.get_new_password()
+        assert not list(filter(
+            lambda x: x in new_password and x.upper() in new_password, list(new_password)
+        ))
+
     def test_selecting_length(self):
         testing_length = 16
         self.main_page = MainPage(self.driver)

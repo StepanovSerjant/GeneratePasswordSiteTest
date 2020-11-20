@@ -19,6 +19,7 @@ class MainPageLocators:
     UPPERCASE_CHECKBOX = (By.ID, "Uppercase")
     AUTOSELECT_CHECKBOX = (By.ID, "AutoSelect")
     NO_AMB_CHECKBOX = (By.ID, "NoAmb")
+    NO_SIMILAR_CHECKBOX = (By.ID, "Nosimilar")
 
     GENERATE_BTN = (By.CSS_SELECTOR, "div.button:nth-child(1)")
     PASSWORD_OUTPUT_FIELD = (By.ID, "final_pass")
