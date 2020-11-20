@@ -30,6 +30,13 @@ class TestMain(BaseTest):
         new_password = self.main_page.get_new_password()
         assert new_password == self.main_page.get_selected_text()
 
+    def test_no_amb_checkbox(self):
+        exclude_symbols = list("""{[}]()/\'"`~,;:.<>""")
+        self.main_page = MainPage(self.driver)
+        self.main_page.set_checkbox(self.main_page.NO_AMB_CHECKBOX, True)
+        new_password = self.main_page.get_new_password()
+        assert not list(filter(lambda x: x in new_password, exclude_symbols))
+
     def test_selecting_length(self):
         testing_length = 16
         self.main_page = MainPage(self.driver)
